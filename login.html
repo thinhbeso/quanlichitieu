@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập - Quản lý Chi tiêu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        .login-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .login-header i {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+        
+        .login-header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .login-header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+        
+        .login-body {
+            padding: 40px 30px;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 600;
+            color: #999;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+        
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .forgot-password {
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        .forgot-password a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .alert {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-danger {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <i class="fas fa-wallet"></i>
+            <h1>Quản lý Chi tiêu</h1>
+            <p>Quản lý tài chính cá nhân hiệu quả</p>
+        </div>
+        
+        <div class="login-body">
+            <div id="alert-container"></div>
+            
+            <div class="tabs">
+                <div class="tab active" data-tab="login">Đăng nhập</div>
+                <div class="tab" data-tab="register">Đăng ký</div>
+            </div>
+            
+            <!-- Form đăng nhập -->
+            <div id="login-form" class="tab-content active">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label>Tên đăng nhập hoặc Email</label>
+                        <input type="text" name="username" placeholder="Nhập username hoặc email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Mật khẩu</label>
+                        <input type="password" name="password" placeholder="Nhập mật khẩu" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt"></i> Đăng nhập
+                    </button>
+                    <div class="forgot-password">
+                        <a href="#" id="forgotPasswordLink">Quên mật khẩu?</a>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Form đăng ký -->
+            <div id="register-form" class="tab-content">
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label>Tên đầy đủ</label>
+                        <input type="text" name="full_name" placeholder="Nhập họ tên" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tên đăng nhập</label>
+                        <input type="text" name="username" placeholder="Nhập username" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" name="email" placeholder="Nhập email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Mật khẩu</label>
+                        <input type="password" name="password" placeholder="Nhập mật khẩu (tối thiểu 6 ký tự)" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-user-plus"></i> Đăng ký
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Chuyển tab
+            $('.tab').click(function() {
+                const tab = $(this).data('tab');
+                $('.tab').removeClass('active');
+                $(this).addClass('active');
+                $('.tab-content').removeClass('active');
+                $(`#${tab}-form`).addClass('active');
+                $('#alert-container').empty();
+            });
+            
+            // Xử lý đăng nhập
+            $('#loginForm').submit(function(e) {
+                e.preventDefault();
+                
+                const formData = $(this).serialize() + '&action=login';
+                
+                $.ajax({
+                    url: 'api/auth.php',
+                    type: 'POST',
+                    data: formData,
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            showAlert('success', response.message);
+                            setTimeout(() => {
+                                window.location.href = 'index.php';
+                            }, 1000);
+                        } else {
+                            showAlert('danger', response.message);
+                        }
+                    },
+                    error: function() {
+                        showAlert('danger', 'Có lỗi xảy ra. Vui lòng thử lại!');
+                    }
+                });
+            });
+            
+            // Xử lý đăng ký
+            $('#registerForm').submit(function(e) {
+                e.preventDefault();
+                
+                const formData = $(this).serialize() + '&action=register';
+                
+                $.ajax({
+                    url: 'api/auth.php',
+                    type: 'POST',
+                    data: formData,
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            showAlert('success', response.message + ' Vui lòng đăng nhập!');
+                            setTimeout(() => {
+                                $('.tab[data-tab="login"]').click();
+                                $('#registerForm')[0].reset();
+                            }, 1500);
+                        } else {
+                            showAlert('danger', response.message);
+                        }
+                    },
+                    error: function() {
+                        showAlert('danger', 'Có lỗi xảy ra. Vui lòng thử lại!');
+                    }
+                });
+            });
+            
+            // Quên mật khẩu
+            $('#forgotPasswordLink').click(function(e) {
+                e.preventDefault();
+                const email = prompt('Nhập email của bạn:');
+                if (email) {
+                    $.ajax({
+                        url: 'api/auth.php',
+                        type: 'POST',
+                        data: { action: 'forgot_password', email: email },
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.success) {
+                                alert(response.message);
+                            } else {
+                                alert(response.message);
+                            }
+                        }
+                    });
+                }
+            });
+            
+            // Hiển thị thông báo
+            function showAlert(type, message) {
+                const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+                const html = `<div class="alert ${alertClass}">${message}</div>`;
+                $('#alert-container').html(html);
+                
+                setTimeout(() => {
+                    $('#alert-container').empty();
+                }, 5000);
+            }
+        });
+    </script>
+</body>
+</html>
