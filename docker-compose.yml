@@ -40,5 +40,20 @@ services:
       - db_data:/var/lib/mysql
       - ./qlct.sql:/docker-entrypoint-initdb.d/qlct.sql:ro
 
+  phpmyadmin:
+    image: phpmyadmin:5
+    container_name: quanlichitieu-phpmyadmin
+    depends_on:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER: ${DB_USER:-app}
+      PMA_PASSWORD: ${DB_PASS:-app_password}
+      UPLOAD_LIMIT: 64M
+    ports:
+      - "${PMA_PORT:-8081}:80"
+    restart: unless-stopped
+
 volumes:
   db_data:
