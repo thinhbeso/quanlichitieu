@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  app:
+    build: .
+    container_name: quanlichitieu-app
+    ports:
+      - "${APP_PORT:-8080}:80"
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: ${DB_USER:-app}
+      DB_PASS: ${DB_PASS:-app_password}
+      DB_NAME: ${DB_NAME:-expenditure_management}
+      DB_USERNAME: ${DB_USER:-app}
+      DB_PASSWORD: ${DB_PASS:-app_password}
+      DB_DATABASE: ${DB_NAME:-expenditure_management}
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: quanlichitieu-db
+    command: [
+      "--default-authentication-plugin=mysql_native_password",
+      "--character-set-server=utf8mb4",
+      "--collation-server=utf8mb4_unicode_ci",
+      "--skip-character-set-client-handshake"
+    ]
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+      MYSQL_DATABASE: ${DB_NAME:-expenditure_management}
+      MYSQL_USER: ${DB_USER:-app}
+      MYSQL_PASSWORD: ${DB_PASS:-app_password}
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./qlct.sql:/docker-entrypoint-initdb.d/qlct.sql:ro
+
+volumes:
+  db_data:

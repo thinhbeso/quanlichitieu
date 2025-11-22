@@ -1,0 +1,9 @@
+.git
+node_modules
+vendor
+*.log
+*.tmp
+docker-compose.yml
+.env
+.env.*
+db_data
