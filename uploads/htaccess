@@ -1,0 +1,16 @@
+# uploads/.htaccess - Bảo mật thư mục uploads
+
+# Chỉ cho phép truy cập file ảnh
+<FilesMatch "\.(jpg|jpeg|png|gif|webp)$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>
+
+# Chặn thực thi PHP
+<FilesMatch "\.php$">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
+
+# Chặn listing directory
+Options -Indexes
